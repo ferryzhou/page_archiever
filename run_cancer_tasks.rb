@@ -1,6 +1,6 @@
 require './cancer_pages'
-require './page_archiever'
+require './tasks_runner'
 
 root = '../cancer_htm'
 
-PageArchiever.new(root).run(cancer_tasks)
+TasksRunner.new(root).run(cancer_tasks)
