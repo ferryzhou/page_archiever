@@ -8,7 +8,8 @@ require 'net/http'
 require 'iconv'
 require 'uri'
 
-def gb2312_to_utf8(str); Iconv.iconv('utf-8', 'GBK', str).join; end
+def gbk_to_utf8(str); Iconv.iconv('utf-8', 'GBK', str).join; end
+def utf8_to_gbk(str); Iconv.iconv('GBK', 'utf-8', str).join; end
 
 # given one start page, archieve, continue on "next page", till end or 
 # a certain number of pages
@@ -17,7 +18,7 @@ def gb2312_to_utf8(str); Iconv.iconv('utf-8', 'GBK', str).join; end
 def get_next_page_url(content)
   doc = Hpricot(content)
   element = doc.at("//a[text()='下一页']")
-  element.nil? ? nil : URI.escape(element['href'])
+  element.nil? ? nil : URI.escape(utf8_to_gbk(element['href']))
 end
 
 
@@ -46,7 +47,7 @@ class MultiPageArchiever
         raw_source_path = File.join(raw_source_dir, id.to_s + '.htm')
         File.new(raw_source_path, 'w').puts(content)
         puts 'finshed archiving ' + url + ' ____________________'
-        content = gb2312_to_utf8(content)  #assume gb2312 encoding
+        content = gbk_to_utf8(content)  #assume gb2312 encoding
 		next_url = get_next_page_url(content)
 		id = id + 1
       rescue
