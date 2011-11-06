@@ -14,11 +14,17 @@ def utf8_to_gbk(str); Iconv.iconv('GBK', 'utf-8', str).join; end
 # given one start page, archieve, continue on "next page", till end or 
 # a certain number of pages
 
+#adhoc to avoid escape %
+def url_escape_gbk(str)
+  ind = str.index('subitem')
+  str[0...ind] + URI.escape(str[ind..-1])
+end
+
 # something like "下一页“
 def get_next_page_url(content)
   doc = Hpricot(content)
   element = doc.at("//a[text()='下一页']")
-  element.nil? ? nil : URI.escape(utf8_to_gbk(element['href']))
+  element.nil? ? nil : url_escape_gbk(utf8_to_gbk(element['href']))
 end
 
 

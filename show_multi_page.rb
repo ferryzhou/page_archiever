@@ -5,5 +5,5 @@ start_url = 'http://www.tianya.cn/new/techforum/ArticlesList.asp?pageno=1&iditem
 name = 'tianya_zhongliu';
 
 archiever = MultiPageArchiever.new(root)
-archiever.end_count = 5
+archiever.end_count = 2
 archiever.run(start_url, name)
